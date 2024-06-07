@@ -60,11 +60,17 @@
           <p *ngFor="let especie of ocean.especies">{{especie.nome}}</p>
         </td>
         <td class="py-3">
-        <p *ngFor="let especie of ocean.especies">{{especie.status}}</p>
+          <p *ngFor="let especie of ocean.especies">{{especie.status}}</p>
         </td>
-        <td>{{ocean.projetosConservacao[0]}}</td>
-        <td>{{ocean.projetosConservacao[1]}}</td>
-        <td>{{ocean.projetosConservacao[2]}}</td>
+        <td class="py-3">
+          <p *ngFor="let projeto of ocean.projetosConservacao">{{projeto.nomeProjeto}}</p>
+        </td>
+        <td class="py-3">
+          <p *ngFor="let projeto of ocean.projetosConservacao">{{projeto.tipoProjeto}}</p>
+        </td>
+        <td class="py-3">
+          <p *ngFor="let projeto of ocean.projetosConservacao">{{projeto.tipoParticipacao}}</p>
+        </td>
       </tr>
     </tbody>
   </table>
