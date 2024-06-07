@@ -12,11 +12,24 @@ import { DataExplorerService } from '../../services/data-explorer.service';
 })
 export class DataExplorerComponent {
   oceanDatas:OceanData[] = [];
+  filtro:string = '';
 
   constructor(private dataExplorerService:DataExplorerService) {  }
 
   listar():void {
     this.dataExplorerService.listar().subscribe((listOceanData) => (this.oceanDatas = listOceanData));
+  }
+
+  aplicarFiltro() {
+    if (!this.filtro) {
+      // Se o filtro estiver vazio, mostre todos os itens
+      return this.oceanDatas;
+    }
+
+    // Filtra os itens com base no nome
+    return this.oceanDatas.filter(ocean =>
+      ocean.regiao.toLowerCase().includes(this.filtro.toLowerCase())
+    );
   }
 
   ngOnInit():void {
