@@ -1,42 +1,47 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { OceanData } from '../../interfaces/ocean-data';
 import { DataExplorerService } from '../../services/data-explorer.service';
-import { Especies } from '../../interfaces/especies';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-data-explorer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './data-explorer.component.html',
   styleUrl: './data-explorer.component.css'
 })
-export class DataExplorerComponent {
+export class DataExplorerComponent implements OnInit{
+  @Output() filtersChanged = new EventEmitter<FormGroup>();
   oceanDatas:OceanData[] = [];
-  especies:Especies[] = [];
-  filtro:string = '';
+  species:String[] = [];
+  conservationStatus:String[] = [];
+  filtersForm:FormGroup;
 
-  constructor(private dataExplorerService:DataExplorerService) {  }
-
-  listar():void {
-    this.dataExplorerService.listar().subscribe((listOceanData) => (this.oceanDatas = listOceanData));
-
-    this.oceanDatas.forEach(element => {
-      console.log(element)
+  constructor(private dataExplorerService:DataExplorerService, private formBuilder: FormBuilder) {
+    this.filtersForm = this.formBuilder.group({
+      regiao: [''],
+      temperaturaAgua: [''],
+      pH: [''],
+      niveisPoluicao: [''],
+      especie: [''],
+      conservationStatus: [''],
     });
   }
 
-  // aplicarFiltro() {
-  //   if (!this.filtro) {
-  //     // Se o filtro estiver vazio, mostre todos os itens
-  //     return this.oceanDatas;
-  //   }
+  listar():void {
+    // this.dataExplorerService.listar().subscribe((listOceanData) => (this.oceanDatas = listOceanData));
 
-  //   // Filtra os itens com base no nome
-  //   return this.oceanDatas.filter(ocean =>
-  //     ocean.regiao.toLowerCase().includes(this.filtro.toLowerCase())
-  //   );
-  // }
+    this.dataExplorerService.listar().subscribe(oceanos => {
+      this.oceanDatas = oceanos;
+      this.species = [...new Set(oceanos.flatMap(oceano => oceano.especies.map(specie => specie.nome)))];
+      this.conservationStatus = [...new Set(oceanos.flatMap(oceano => oceano.especies.map(especie => especie.status)))];
+    });
+  }
+
+  applyFilters(): void {
+    this.filtersChanged.emit(this.filtersForm.value);
+  }
 
   ngOnInit():void {
     this.listar();
