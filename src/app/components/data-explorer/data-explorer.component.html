@@ -1,14 +1,18 @@
 <!-- Seção de filtragem de parâmetros -->
 <div class="mt-3 ms-5 me-5">
-  <h2 class="ms-4">Filters</h2>
+  <h2 class="ms-5">Filters</h2>
   <div class="d-flex flex-wrap justify-content-center">
     <div class="me-2">
       <h5>Regions</h5>
-      <input type="text">
+      <select class="form-select form-select-sm px-5"  name="regions" id="1">
+        <option value="all">All</option>
+      </select>
     </div>
     <div class="ms-2 me-2">
       <h5>Species</h5>
-      <input type="text">
+      <select class="form-select form-select-sm px-5" name="species" id="2">
+        <option value="all">All</option>
+      </select>
     </div>
     <div class="ms-2 me-2">
       <h5>Conservation Status</h5>
@@ -27,7 +31,7 @@
       <input type="text">
     </div>
   </div>
-  <button class="ms-4 mt-3 btn btn-primary fs-5">Search</button>
+  <button class="ms-5 mt-3 btn btn-primary fs-5">Search</button>
 </div>
 <!-- Tabela de exibição -->
 <div class="container mt-3">
@@ -39,8 +43,8 @@
         <th>Water Temperature</th>
         <th>pH</th>
         <th>Polution Level</th>
-        <th>Species Name</th>
-        <th>Species Status</th>
+        <th class="px-3">Species Name</th>
+        <th class="px-4">Species Status</th>
         <th>Project Name</th>
         <th>Project Type</th>
         <th>Participation Type</th>
@@ -52,8 +56,12 @@
         <td>{{ocean.temperaturaAgua}}</td>
         <td>{{ocean.pH}}</td>
         <td>{{ocean.nivelPoluicao}}</td>
-        <td>{{ocean.especies[0]}}</td>
-        <td>{{ocean.especies[1]}}</td>
+        <td class="py-3">
+          <p *ngFor="let especie of ocean.especies">{{especie.nome}}</p>
+        </td>
+        <td class="py-3">
+        <p *ngFor="let especie of ocean.especies">{{especie.status}}</p>
+        </td>
         <td>{{ocean.projetosConservacao[0]}}</td>
         <td>{{ocean.projetosConservacao[1]}}</td>
         <td>{{ocean.projetosConservacao[2]}}</td>

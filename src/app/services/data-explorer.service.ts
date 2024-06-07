@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataExplorerService {
-  private dataExplorerUrl = "https://fiap-3sis-gs-20241.azurewebsites.net/"
+  private dataExplorerUrl = "https://fiap-3sis-gs-20241.azurewebsites.net/OceanData?pagina=1&qtde=20"
 
 
   constructor(private http: HttpClient) {
@@ -16,7 +16,6 @@ export class DataExplorerService {
 
   listar(): Observable<OceanData[]> {
     return this.http.get<OceanData[]>(this.dataExplorerUrl) as Observable<OceanData[]>;
-    //Retorna a URL dos Pokemons
   }
 
 }
