@@ -7,15 +7,21 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataExplorerService {
-  private dataExplorerUrl = "https://fiap-3sis-gs-20241.azurewebsites.net/OceanData?pagina=1&qtde=20"
+  private dataExplorerUrl = "https://fiap-3sis-gs-20241.azurewebsites.net/"
 
 
   constructor(private http: HttpClient) {
-    
+
   }
 
-  listar(): Observable<OceanData[]> {
-    return this.http.get<OceanData[]>(this.dataExplorerUrl) as Observable<OceanData[]>;
+  listar(regiao: string, especie: string, statusConservacao: string,
+    temperaturaMin: string, temperaturaMax: string, phMin: string, 
+    phMax: string, nivelPoluicao: string): Observable<OceanData[]> {
+    const url = `${this.dataExplorerUrl}OceanData?${regiao}${especie}${statusConservacao}${temperaturaMin}${temperaturaMax}${phMin}${phMax}${nivelPoluicao}pagina=1&qtde=20`
+    console.log(url)
+    return this.http.get<OceanData[]>(url) as Observable<OceanData[]>;
   }
+
+
 
 }

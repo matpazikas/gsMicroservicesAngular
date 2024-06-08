@@ -9,52 +9,56 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './data-explorer.component.html',
-  styleUrl: './data-explorer.component.css'
+  styleUrls: ['./data-explorer.component.css']
 })
-export class DataExplorerComponent implements OnInit{
+export class DataExplorerComponent implements OnInit {
   @Output() filtersChanged = new EventEmitter<FormGroup>();
-  oceanDatas:OceanData[] = [];
-  species:String[] = [];
-  conservationStatus:String[] = [];
-  filtersForm:FormGroup = new FormGroup([]);
-  listaDados:any[] = [];
-  contador:number = -1;
+  oceanDatas: OceanData[] = [];
+  species: String[] = [];
+  conservationStatus: String[] = [];
+  filterForm: FormGroup;
 
-  constructor(private dataExplorerService:DataExplorerService, private formBuilder: FormBuilder) {
-    this.filtersForm = this.formBuilder.group({
+  constructor(private dataExplorerService: DataExplorerService, private formBuilder: FormBuilder) {
+    this.filterForm = this.formBuilder.group({
       regiao: [''],
-      temperaturaAgua: [''],
-      pH: [''],
-      niveisPoluicao: [''],
-      especie: [''],
-      conservationStatus: [''],
+      nomeEspecie: [''],
+      conserv: [''],
+      tempMin: [''],
+      tempMax: [''],
+      phMin: [''],
+      phMax: [''],
+      poluicao: ['']
     });
   }
 
-  listar():void {
-    // this.dataExplorerService.listar().subscribe((listOceanData) => (this.oceanDatas = listOceanData));
+  listar(): void {
+    const filters = this.filterForm.value;
+    const regiao = filters.regiao;
+    const nomeEspecie = filters.nomeEspecie;
+    const conserv = filters.conserv;
+    const tempMin = filters.tempMin ? `temperaturaMin=${parseFloat(filters.tempMin)}&` : '';
+    const tempMax = filters.tempMax ? `temperaturaMax=${parseFloat(filters.tempMax)}&` : '';
+    const phMin = filters.phMin ? `phMin=${parseFloat(filters.phMin)}&` : '';
+    const phMax = filters.phMax ? `phMax=${parseFloat(filters.phMax)}&` : '';
+    const poluicao = filters.poluicao;
 
-    this.dataExplorerService.listar().subscribe(oceanos => {
+    this.dataExplorerService.listar(
+      regiao,
+      nomeEspecie,
+      conserv,
+      tempMin,
+      tempMax,
+      phMin,
+      phMax,
+      poluicao
+    ).subscribe(oceanos => {
       this.oceanDatas = oceanos;
       this.species = [...new Set(oceanos.flatMap(oceano => oceano.especies.map(specie => specie.nome)))];
       this.conservationStatus = [...new Set(oceanos.flatMap(oceano => oceano.especies.map(especie => especie.status)))];
     });
   }
 
-
-  ngOnInit():void {
+  ngOnInit(): void {
     this.listar();
-    // this.aplicarFiltro();
   }
-
-  obterDados() {
-    const titulo = (<HTMLInputElement>document.getElementById('1')).value;
-    const corpo = (<HTMLSelectElement>document.getElementById('2')).value;
-    console.log({ titulo, corpo });
-    this.listaDados.push(titulo);
-    this.contador += 1;
-    console.log(this.listaDados)
-
-  }
-
 }
