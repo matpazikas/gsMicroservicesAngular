@@ -41,6 +41,22 @@ export class DataExplorerComponent implements OnInit {
     const phMin = filters.phMin ? `phMin=${parseFloat(filters.phMin)}&` : '';
     const phMax = filters.phMax ? `phMax=${parseFloat(filters.phMax)}&` : '';
     const poluicao = filters.poluicao;
+    const phMinNumber = filters.phMin;
+    const phMaxNumber = filters.phMax;
+    const tempMinNumber = filters.tempMin;
+    const tempMaxNumber = filters.tempMax;
+
+    if (phMinNumber !== null && phMaxNumber !== null && phMinNumber > phMaxNumber && tempMinNumber !== null && tempMaxNumber !== null && tempMinNumber > tempMaxNumber) {
+      alert('A temperatura mínima não pode ser maior que a temperatura máxima.\nO pH mínimo não pode ser maior que o pH máximo.');
+      return;
+    }
+    else if (phMinNumber !== null && phMaxNumber !== null && phMinNumber > phMaxNumber) {
+      alert('O pH mínimo não pode ser maior que o pH máximo.');
+      return;
+    } else if (tempMinNumber !== null && tempMaxNumber !== null && tempMinNumber > tempMaxNumber) {
+      alert('A temperatura mínima não pode ser maior que a temperatura máxima.');
+      return;
+    }
 
     this.dataExplorerService.listar(
       regiao,

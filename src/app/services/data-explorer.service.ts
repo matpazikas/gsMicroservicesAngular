@@ -15,7 +15,7 @@ export class DataExplorerService {
   }
 
   listar(regiao: string, especie: string, statusConservacao: string,
-    temperaturaMin: string, temperaturaMax: string, phMin: string, 
+    temperaturaMin: string, temperaturaMax: string, phMin: string,
     phMax: string, nivelPoluicao: string): Observable<OceanData[]> {
     const url = `${this.dataExplorerUrl}OceanData?${regiao}${especie}${statusConservacao}${temperaturaMin}${temperaturaMax}${phMin}${phMax}${nivelPoluicao}pagina=1&qtde=20`
     console.log(url)
