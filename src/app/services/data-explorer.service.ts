@@ -11,7 +11,7 @@ export class DataExplorerService {
 
 
   constructor(private http: HttpClient) {
-
+    
   }
 
   listar(): Observable<OceanData[]> {

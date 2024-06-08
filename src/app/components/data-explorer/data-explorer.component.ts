@@ -16,7 +16,9 @@ export class DataExplorerComponent implements OnInit{
   oceanDatas:OceanData[] = [];
   species:String[] = [];
   conservationStatus:String[] = [];
-  filtersForm:FormGroup;
+  filtersForm:FormGroup = new FormGroup([]);
+  listaDados:any[] = [];
+  contador:number = -1;
 
   constructor(private dataExplorerService:DataExplorerService, private formBuilder: FormBuilder) {
     this.filtersForm = this.formBuilder.group({
@@ -39,13 +41,20 @@ export class DataExplorerComponent implements OnInit{
     });
   }
 
-  applyFilters(): void {
-    this.filtersChanged.emit(this.filtersForm.value);
-  }
 
   ngOnInit():void {
     this.listar();
     // this.aplicarFiltro();
+  }
+
+  obterDados() {
+    const titulo = (<HTMLInputElement>document.getElementById('1')).value;
+    const corpo = (<HTMLSelectElement>document.getElementById('2')).value;
+    console.log({ titulo, corpo });
+    this.listaDados.push(titulo);
+    this.contador += 1;
+    console.log(this.listaDados)
+
   }
 
 }
